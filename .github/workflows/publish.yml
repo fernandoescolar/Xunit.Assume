@@ -15,11 +15,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '2.2.402'
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.NUGET_KEY}}
     - name: Build
       run: dotnet build src/Xunit.Assume/Xunit.Assume.csproj 
     - name: Create the package
       run: dotnet pack --configuration Release src/Xunit.Assume/Xunit.Assume.csproj 
     - name: Publish the package to GPR
-      run: dotnet nuget push src/Xunit.Assume/bin/Release/*.nupkg       
+      run: dotnet nuget push src/Xunit.Assume/bin/Release/*.nupkg -k ${{secrets.NUGET_KEY}} -s https://api.nuget.org/v3/index.json
+      
