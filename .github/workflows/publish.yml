@@ -16,5 +16,6 @@ jobs:
         uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/Xunit.Assume/Xunit.Assume.csproj 
+          VERSION_REGEX: <PackageVersion>(.*)<\/PackageVersion>
           NUGET_KEY: ${{secrets.NUGET_KEY}}
           
