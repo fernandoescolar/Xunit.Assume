@@ -20,5 +20,4 @@ jobs:
     - name: Create the package
       run: dotnet pack --configuration Release src/Xunit.Assume/Xunit.Assume.csproj 
     - name: Publish the package to GPR
-      run: dotnet nuget push src/Xunit.Assume/bin/Release/*.nupkg -k ${{secrets.NUGET_KEY}} -s https://api.nuget.org/v3/index.json
-      
+      run: dotnet nuget push src/Xunit.Assume/bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_KEY}} 
