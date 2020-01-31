@@ -1,6 +1,6 @@
 namespace Xunit.Tests
 {
-    public class IntegrationTests
+    public class E2ETests
     {
         private const string SkipMessage = "Assumption not fulfilled";
 
