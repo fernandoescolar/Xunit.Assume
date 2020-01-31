@@ -109,7 +109,7 @@ public void AssumeFactTest(int some_var)
 
 ## Almost real world case
 
-In this utopian test case we can find an artifact we want to test called `Target`. This artifact has two methods: `CanExecute` and `Execute`. In our imaginary system, always I'm going to use `Target` I will call `CanExecute` first. And if the return value is `true` them I will call `Execute`:
+In this utopian test case we can find an artifact we want to test called `Target`. This artifact has two methods: `CanExecute` and `Execute`. In our imaginary system, always I'm going to use `Target` I will call `CanExecute` first. And if the return value is `true` then I will call `Execute`:
 
 ```csharp
 enum States
@@ -134,15 +134,15 @@ class Target
 }
 ```
 
-Going deep in the code I can determine that whe the `state` I'm using is `Active` the `CanExecute` method will return `false`, and `true` otherwise. So I can test the `Execute` method excluding the case when `state` is `Active`, but it wont provide information about what happen with this case. 
+Going deep in to the code you can determine when the `state` used is `Active`,  `CanExecute` method will return `false`, and `true` otherwise. So I can test the `Execute` method excluding the case when `state` is `Active`, but it wont provide information about what really happens with this particular case.
 
-I want to this case explicitly be noticed to other developers. To achieve this I can use `Assume` to skip the test when `state` is `Active`: 
+For this case you may want to explicitly notify other developers about this special behavior. To achieve this you can use `Assume` to skip the test when `state` is `Active`: 
 
 ```csharp
 class Test
 {
     [AssumeTheory]
-    [MemberData(nameof(GetStatesValues))]
+    [MemberData(nameof(GetAllStatesValues))]
     public void Target_Execute(States initialState)
     {
         // Arrange
@@ -150,7 +150,7 @@ class Test
         var target = new Target();
 
         // Assume
-        Assume.NotEquals(initialState, States.Active, "Can execute only in not Active state");
+        Assume.NotEquals(initialState, States.Active, "CanExecute returns true only with non Active states");
 
         // Act
         var actual = target.Execute(initialState);
@@ -158,20 +158,7 @@ class Test
         // Assert
         Assert.Equal(expected, actual);
     }
-
-    public  static IEnumerable<object[]> GetStatesValues()
-    {
-        return GetEnumValues<States>();
-    }
-
-    private static IEnumerable<object[]> GetEnumValues<T>()
-    {
-        var enumType = typeof(T);
-        if (!enumType.IsEnum) throw new ArgumentException(nameof(enumType));
-
-        return Enum.GetValues(enumType)
-                   .Cast<T>()
-                   .Select(x => new object[] { x });
-    }
 }
 ```
+
+You can see full impementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/DemoTests.cs).
