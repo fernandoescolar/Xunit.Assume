@@ -6,16 +6,20 @@ on:
 
 jobs:
   publish:
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '2.2.402'
-      - name: publish on version change
-        uses: rohith/publish-nuget@v2
-        with:
-          PROJECT_FILE_PATH: src/Xunit.Assume/Xunit.Assume.csproj 
-          VERSION_REGEX: <PackageVersion>(.*)<\/PackageVersion>
-          NUGET_KEY: ${{secrets.NUGET_KEY}}
-          
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '2.2.402'
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.NUGET_KEY}}
+    - name: Build
+      run: dotnet build src/Xunit.Assume/Xunit.Assume.csproj 
+    - name: Create the package
+      run: dotnet pack --configuration Release src/Xunit.Assume/Xunit.Assume.csproj 
+    - name: Publish the package to GPR
+      run: dotnet nuget push src/Xunit.Assume/bin/Release/*.nupkg       
