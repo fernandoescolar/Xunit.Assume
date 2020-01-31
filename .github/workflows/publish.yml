@@ -1,0 +1,20 @@
+name: Publish
+
+on: 
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '2.2.402'
+      - name: publish on version change
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: src/Xunit.Assume/Xunit.Assume.csproj 
+          NUGET_KEY: ${{secrets.NPM_TOKEN}}
+          
