@@ -113,7 +113,7 @@ public void AssumeFactTest(int some_var)
 
 ### Windows only
 
-With dotnet core, your tests could be runned in any platform. Maybe your test is only ready for Windows platforms. You can use `Assume` to skip this test when the current execution platform is no the expected one:
+With dotnet core, your tests could be runned in any platform. Maybe your test is only ready for Windows platforms. You can use `Assume` to skip this test when the current execution platform is not the expected one:
 
 ```csharp
 [AssumeFact]
