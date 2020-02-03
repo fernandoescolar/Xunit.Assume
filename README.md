@@ -109,6 +109,37 @@ public void AssumeFactTest(int some_var)
 }
 ```
 
+## Assume
+
+The static artifact `Assume` has the contract bellow:
+
+```csharp
+class Assume
+{
+    void Empty(string str, string message = null);
+    void Empty(Func<string> getter, string message = null);
+
+    void Equals<T>(T expected, T target, string message = null);
+    
+    void False(bool condition, string message = null);
+    void False(Func<bool> condition, string message = null);
+    
+    void NotEmpty(string str, string message = null);
+    void NotEmpty(Func<string> getter, string message = null);
+    
+    void NotEquals<T>(T expected, T target, string message = null);
+    
+    void NotNull<T>(T obj, string message = null);
+    void NotNull<T>(Func<T> getter, string message = null);
+    
+    void That(bool condition, string message = null);
+    void That(Func<bool> condition, string message = null);
+    
+    void True(bool condition, string message = null);
+    void True(Func<bool> condition, string message = null);
+}
+```
+
 ## Examples
 
 ### Windows only
