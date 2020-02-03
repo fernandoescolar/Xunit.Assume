@@ -66,8 +66,8 @@ dotnet add package xUnit.Assume
 It will add some new artifacts to help you testing:
 
 - `Assume` is an static class to use assume clausules.
-- `AssumeFact` is an attribute to substitute the original `Fact` attribute, to take care os assume conditions.
-- `AssumeTheory` is an attribute to substitute the original `Theory` attribute, to take care os assume conditions.
+- `AssumeFact` is an attribute to substitute the original `Fact` attribute, to take care of assume conditions.
+- `AssumeTheory` is an attribute to substitute the original `Theory` attribute, to take care of assume conditions.
 
 If you want assume that the current state is correct, using the artifacts above you can skip a `xUnit` by giving a meaning or reason to it:
 
@@ -89,7 +89,7 @@ public void AssumeFactTest()
 
 In this code, if the `Assume` condition is not fulfilled, the test will be skipped.
 
-I can use assume with `AssumeTheory` decorators:
+You can use assume with `AssumeTheory` decorators:
 
 ```csharp
 [AssumeTheory]
@@ -113,7 +113,7 @@ public void AssumeFactTest(int some_var)
 
 ### Windows only
 
-With dotnet core, your tests could be runned in any platform. Maybe your on of your test is only ready for Windows platforms. You can use `Assume` to skip this test when the current execution platform is no the expected one:
+With dotnet core, your tests could be runned in any platform. Maybe your test is only ready for Windows platforms. You can use `Assume` to skip this test when the current execution platform is no the expected one:
 
 ```csharp
 [AssumeFact]
@@ -170,7 +170,7 @@ You can see full impementation of this example [here](https://github.com/fernand
 
 ### Context value
 
-In this utopian test case we can find an artifact we want to test called `Target`. This artifact has two methods: `CanExecute` and `Execute`. In our imaginary system, always I'm going to use `Target` I will call `CanExecute` first. And if the return value is `true` then I will call `Execute`:
+In this utopian test case we can find an artifact we want to test called `Target`. This artifact has two methods: `CanExecute` and `Execute`. In our imaginary system, when you are going to use `Target` you will call `CanExecute` always before. And if the return value is `true` then you will call `Execute`:
 
 ```csharp
 interface IContext
@@ -209,7 +209,7 @@ class Target
 }
 ```
 
-Going deep in to the code you can determine when the `state` stored in the context is `Active`,  `CanExecute` method will return `false`, and `true` otherwise. So I can test the `Execute` method excluding the case when `state` is `Active`, but it wont provide information about what really happens with this particular case.
+Going deep in to the code you can determine when the `state` stored in the context is `Active`,  `CanExecute` method will return `false`, and `true` otherwise. So you can test the `Execute` method excluding the case when `state` is `Active`, but it wont provide information about what really happens with this particular case.
 
 For this case you may want to explicitly notify other developers about this special behavior. To achieve this you can use `Assume` to skip the test when `state` is `Active`: 
 
