@@ -19,7 +19,9 @@ public void AAA_Test()
 }
 ```
 
-But maybe a developer can find a situation where testing a particular context state makes no sense. To solve this, the best way is to use an extension on the 3-As pattern calld "AAAA" or Arrange-Assume-Act-Assert pattern. Where:
+Ideally, the developer writing a test has control of all of the forces that might cause a test to fail. However, sometimes this is not desirable or possible. For example, if a test fails when run in a different locale than the developer intended, it can be fixed by explicitly passing a locale to the domain code. But if this isn't immediately possible, making dependencies explicit can often improve a design. 
+
+Keeping this in mind, the best way is to use an extension on the 3-As pattern called "AAAA" or Arrange-Assume-Act-Assert pattern. Where:
 
 - **Arrange** the execution context in its initial configuration. Create any test doubles you may need. Initialize artifacts.
 
@@ -107,11 +109,75 @@ public void AssumeFactTest(int some_var)
 }
 ```
 
-## Almost real world case
+## Examples
+
+### Windows only
+
+With dotnet core, your tests could be runned in any platform. Maybe your on of your test is only ready for Windows platforms. You can use `Assume` to skip this test when the current execution platform is no the expected one:
+
+```csharp
+[AssumeFact]
+public void AssumeWindows()
+{
+    // Arrange
+
+    // Assume
+    Assume.True(IsWindows(), "This OS is not supported");
+
+    // Act
+
+    // Assert
+}
+
+private static bool IsWindows()
+{
+    return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+}
+```
+
+You can see full impementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/Demos/OSDemoTests.cs).
+
+### Bug fixing
+
+You can use `Assume` to skip tests that depends on a bug be fixed:
+
+```csharp
+[Fact]
+[Bug("121")]
+public void BugFixedChecker()
+{
+    // Arrange
+
+    // Act
+
+    // Assert
+}
+
+[AssumeFact]
+public void AssumeBugsAreFixed()
+{
+    Assume.True(BugIsFixed("121"), "Bug #121 has not been fixed yet");
+
+    // Arrange
+    
+    // Act
+    
+    // Assert
+}
+```
+
+You can see full impementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/Demos/BugsDemoTests.cs).
+
+### Context value
 
 In this utopian test case we can find an artifact we want to test called `Target`. This artifact has two methods: `CanExecute` and `Execute`. In our imaginary system, always I'm going to use `Target` I will call `CanExecute` first. And if the return value is `true` then I will call `Execute`:
 
 ```csharp
+interface IContext
+{
+    T GetItem<T>();
+}
+
 enum States
 {
     Unknown,
@@ -121,44 +187,50 @@ enum States
 
 class Target 
 {
-    public bool CanExecute(States state)
+    private readonly IContext _context;
+
+    public Target(IContext context)
     {
+        _context = context;
+    }
+
+    public bool CanExecute()
+    {
+        var state = _context.GetItem<States>();;
         return state != States.Active;
     }
 
-    public int Execute(States state)
+    public int Execute()
     {
+        var state = _context.GetItem<States>();
         // do stuff
         return 0;
     }
 }
 ```
 
-Going deep in to the code you can determine when the `state` used is `Active`,  `CanExecute` method will return `false`, and `true` otherwise. So I can test the `Execute` method excluding the case when `state` is `Active`, but it wont provide information about what really happens with this particular case.
+Going deep in to the code you can determine when the `state` stored in the context is `Active`,  `CanExecute` method will return `false`, and `true` otherwise. So I can test the `Execute` method excluding the case when `state` is `Active`, but it wont provide information about what really happens with this particular case.
 
 For this case you may want to explicitly notify other developers about this special behavior. To achieve this you can use `Assume` to skip the test when `state` is `Active`: 
 
 ```csharp
-class Test
+[AssumeTheory]
+[MemberData(nameof(GetAllStatesValues))]
+public void Target_Execute(States initialState)
 {
-    [AssumeTheory]
-    [MemberData(nameof(GetAllStatesValues))]
-    public void Target_Execute(States initialState)
-    {
-        // Arrange
-        var expected = 0;
-        var target = new Target();
+    // Arrange
+    var expected = 0;
+    var target = new Target(new FakeContext(initialState));
 
-        // Assume
-        Assume.NotEquals(initialState, States.Active, "CanExecute returns true only with non Active states");
+    // Assume
+    Assume.NotEquals(initialState, States.Active, "Can execute only in not Active state");
 
-        // Act
-        var actual = target.Execute(initialState);
+    // Act
+    var actual = target.Execute();
 
-        // Assert
-        Assert.Equal(expected, actual);
-    }
+    // Assert
+    Assert.Equal(expected, actual);
 }
 ```
 
-You can see full impementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/DemoTests.cs).
+You can see full impementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/Demos/ContextDemoTests.cs).
