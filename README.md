@@ -19,7 +19,7 @@ public void AAA_Test()
 }
 ```
 
-Ideally, the developer writing a test has control of all of the forces that might cause a test to fail. However, sometimes this is not desirable or possible. For example, if a test fails when run in a different locale than the developer intended, it can be fixed by explicitly passing a locale to the domain code. But if this isn't immediately possible, making dependencies explicit can often improve a design. 
+Ideally, the developer writing a test has control of all of the forces that might cause a test to fail. However, sometimes this is not desirable or possible. For example, if a test fails when run in a different locale than the developer intended, it can be fixed by explicitly passing a locale to the domain code. But if this isn't immediately possible, making dependencies explicit can often improve a design.
 
 Keeping this in mind, the best way is to use an extension on the 3-As pattern called "AAAA" or Arrange-Assume-Act-Assert pattern. Where:
 
@@ -77,7 +77,7 @@ public void AssumeFactTest()
 {
     // Arrange
     var some_var = 1;
-    
+
     // Assume
     Assume.That(some_var >= 0, "some_var should be a natural number");
 
@@ -120,23 +120,25 @@ class Assume
     void Empty(Func<string> getter, string message = null);
 
     void Equals<T>(T expected, T target, string message = null);
-    
+
     void False(bool condition, string message = null);
     void False(Func<bool> condition, string message = null);
-    
+
     void NotEmpty(string str, string message = null);
     void NotEmpty(Func<string> getter, string message = null);
-    
+
     void NotEquals<T>(T expected, T target, string message = null);
-    
+
     void NotNull<T>(T obj, string message = null);
     void NotNull<T>(Func<T> getter, string message = null);
-    
+
     void That(bool condition, string message = null);
     void That(Func<bool> condition, string message = null);
-    
+
     void True(bool condition, string message = null);
     void True(Func<bool> condition, string message = null);
+
+    void Reject(string message = null);
 }
 ```
 
@@ -190,9 +192,9 @@ public void AssumeBugsAreFixed()
     Assume.True(BugIsFixed("121"), "Bug #121 has not been fixed yet");
 
     // Arrange
-    
+
     // Act
-    
+
     // Assert
 }
 ```
@@ -216,7 +218,7 @@ enum States
     Active
 }
 
-class Target 
+class Target
 {
     private readonly IContext _context;
 
@@ -242,7 +244,7 @@ class Target
 
 Going deep in to the code you can determine when the `state` stored in the context is `Active`,  `CanExecute` method will return `false`, and `true` otherwise. So you can test the `Execute` method excluding the case when `state` is `Active`, but it wont provide information about what really happens with this particular case.
 
-For this case you may want to explicitly notify other developers about this special behavior. To achieve this you can use `Assume` to skip the test when `state` is `Active`: 
+For this case you may want to explicitly notify other developers about this special behavior. To achieve this you can use `Assume` to skip the test when `state` is `Active`:
 
 ```csharp
 [AssumeTheory]
@@ -265,3 +267,17 @@ public void Target_Execute(States initialState)
 ```
 
 You can see full impementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/Demos/ContextDemoTests.cs).
+
+### Any other scenario
+
+To reject an assumption in any other scenario you can use the `Reject` method:
+
+```csharp
+[AssumeFact]
+public void AssumeBugsAreFixed()
+{
+    Assume.Reject("I think I should skip this test without failing");
+
+    // ...
+}
+```

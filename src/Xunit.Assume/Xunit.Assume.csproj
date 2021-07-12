@@ -8,7 +8,7 @@
   <PropertyGroup>
     <IsPackable>true</IsPackable>
     <PackageId>Xunit.Assume</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <Authors>fernandoescolar</Authors>
     <Description>This library helps you implementing your unit tests following the 4-A, "AAAA" or Arrange-Assume-Act-Assert philosophy, with Xunit.</Description>
     <RepositoryUrl>https://github.com/fernandoescolar/Xunit.Assume</RepositoryUrl>
