@@ -9,7 +9,7 @@ namespace Xunit
         {
             if (!condition)
             {
-                throw new AssumeException(message ?? "Assume rule not fulfilled");
+                Reject(message);
             }
         }
 
@@ -76,6 +76,11 @@ namespace Xunit
         public static void NotEquals<T>(T expected, T target, string message = null)
         {
             That(!expected.Equals(target), message);
+        }
+
+        public static void Reject(string message = null)
+        {
+            throw new AssumeException(message ?? "Assume rule not fulfilled");
         }
     }
 }
