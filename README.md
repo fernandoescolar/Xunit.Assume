@@ -284,4 +284,4 @@ public void AssumeBugsAreFixed()
 
 ## License
 
-The source code is licensed under the [CC-BY-SA](LICENSE.md) license.
+The source code is licensed under the [MIT](LICENSE) license.
