@@ -1,6 +1,6 @@
 name: Publish
 
-on: 
+on:
   release:
     types: [published]
 
@@ -14,10 +14,10 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '2.2.402'
+        dotnet-version: 5.x
     - name: Build
-      run: dotnet build src/Xunit.Assume/Xunit.Assume.csproj 
+      run: dotnet build src/Xunit.Assume/Xunit.Assume.csproj
     - name: Create the package
-      run: dotnet pack --configuration Release src/Xunit.Assume/Xunit.Assume.csproj 
+      run: dotnet pack --configuration Release src/Xunit.Assume/Xunit.Assume.csproj
     - name: Publish the package to GPR
-      run: dotnet nuget push src/Xunit.Assume/bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_KEY}} 
+      run: dotnet nuget push src/Xunit.Assume/bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_KEY}}

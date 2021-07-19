@@ -6,7 +6,7 @@ using System.Reflection;
 namespace Xunit.Tests
 {
     public class BugsDemoTests
-   {
+    {
         [Fact]
         [Bug("121")]
         public void BugFixedChecker()
@@ -24,9 +24,9 @@ namespace Xunit.Tests
             Assume.True(BugIsFixed("121"), "Bug #121 has not been fixed yet");
 
             // Arrange
-            
+
             // Act
-            
+
             // Assert
         }
 
