@@ -19,7 +19,7 @@
 
         [Fact]
         public void return_the_same_object_value_when_it_is_null()
-            => Assert.Equal(null, Act(null));
+            => Assert.Null(Act(null));
 
         protected abstract object Act(object input, string message = null);
     }
