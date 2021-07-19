@@ -116,30 +116,199 @@ The static artifact `Assume` has the contract bellow:
 ```csharp
 class Assume
 {
-    void Empty(string str, string message = null);
-    void Empty(Func<string> getter, string message = null);
+    T Empty<T>(T str, string message = null) where T : IEnumerable;
+    T Empty<T>(Func<T> getter, string message = null)where T : IEnumerable;
 
-    void Equals<T>(T expected, T target, string message = null);
+    bool Equal<T>(T expected, T target, string message = null);
 
-    void False(bool condition, string message = null);
-    void False(Func<bool> condition, string message = null);
+    bool False(bool condition, string message = null);
+    bool False(Func<bool> condition, string message = null);
 
-    void NotEmpty(string str, string message = null);
-    void NotEmpty(Func<string> getter, string message = null);
+    T NotEmpty<T>(T str, string message = null) where T : IEnumerable;
+    T NotEmpty<T>(Func<T> getter, string message = null) where T : IEnumerable;
 
-    void NotEquals<T>(T expected, T target, string message = null);
+    bool NotEqual<T>(T expected, T target, string message = null);
 
-    void NotNull<T>(T obj, string message = null);
-    void NotNull<T>(Func<T> getter, string message = null);
-
-    void That(bool condition, string message = null);
-    void That(Func<bool> condition, string message = null);
-
-    void True(bool condition, string message = null);
-    void True(Func<bool> condition, string message = null);
+    T NotNull<T>(T obj, string message = null);
+    T NotNull<T>(Func<T> getter, string message = null);
 
     void Reject(string message = null);
+    T Reject<T>(string message = null);
+    T Reject<T>(T source, string message = null);
+
+    bool That(bool condition, string message = null);
+    bool That(Func<bool> condition, string message = null);
+
+    bool True(bool condition, string message = null);
+    bool True(Func<bool> condition, string message = null);
 }
+```
+
+### Empty
+
+Assumes that the specified enumerable object is empty:
+
+```csharp
+Assume.Empty(collection);
+Assume.Empty(() => collection);
+Assume.Empty(collection, "Collection should be empty");
+
+collection.AssumeEmpty();
+collection.AssumeEmpty("Collection should be empty");
+
+collection.Assume().Empty();
+collection.Assume().Empty("Collection should be empty");
+```
+
+### Equal
+
+Assumes that two objects are equal:
+
+```csharp
+Assume.Equal(objectA, objectB);
+Assume.Equal(objectA, objectB, "objectA should be equal than objectB");
+
+objectA.AssumeEqual(objectB);
+objectA.AssumeEqual(objectB, "objectA should be equal than objectB");
+
+objectA.Assume().Equal(objectB);
+objectA.Assume().Equal(objectB, "objectA should be equal than objectB");
+```
+
+### False
+
+Assume that the specified condition is false:
+
+```csharp
+Assume.False(condition);
+Assume.False(() => condition);
+Assume.False(condition, "condition should be false");
+
+condition.AssumeFalse();
+condition.AssumeFalse("condition should be false");
+
+condition.Assume().False();
+condition.Assume().False("condition should be false");
+
+var str = "something";
+str.Assume()
+   .False(x => string.IsNullOrEmpty(x), "str should not be null or empty");
+```
+
+### NotEmpty
+
+Assumes that the specified enumerable object is not empty:
+
+```csharp
+Assume.NotEmpty(collection);
+Assume.NotEmpty(() => collection);
+Assume.NotEmpty(collection, "Collection should not be empty");
+
+collection = Assume.NotEmpty(collection);
+
+collection.AssumeNotEmpty();
+collection.AssumeNotEmpty("Collection should not be empty");
+
+collection.Assume().NotEmpty();
+collection.Assume().NotEmpty("Collection should not be empty");
+```
+
+### NotEqual
+
+Assumes that two objects are not equal:
+
+```csharp
+Assume.NotEqual(objectA, objectB);
+Assume.NotEqual(objectA, objectB, "objectA should not be equal than objectB");
+
+objectA.AssumeNotEqual(objectB);
+objectA.AssumeNotEqual(objectB, "objectA should not be equal than objectB");
+
+objectA.Assume().NotEqual(objectB);
+objectA.Assume().NotEqual(objectB, "objectA should not be equal than objectB");
+```
+
+### NotNull
+
+Assumes that the specified object is not null:
+
+```csharp
+Assume.NotNull(obj);
+Assume.NotNull(() => obj);
+Assume.NotNull(obj, "obj should not be null");
+
+obj = Assume.NotNull(collection);
+
+obj.AssumeNotNull();
+obj.AssumeNotNull("obj should not be null");
+
+obj.Assume().NotNull();
+obj.Assume().NotNull("obj should not be null");
+```
+
+### Null
+
+Assumes that the specified object is null:
+
+```csharp
+Assume.Null(obj);
+Assume.Null(() => obj);
+Assume.Null(obj, "obj should be null");
+
+obj = Assume.Null(collection);
+
+obj.AssumeNull();
+obj.AssumeNull("obj should be null");
+
+obj.Assume().Null();
+obj.Assume().Null("obj should be null");
+```
+
+### Reject
+
+Rejects the current assumption:
+
+```csharp
+Assume.Reject();
+Assume.Reject(message);
+
+var obj1 = CouldBeNull() ?? Assume.Reject<string>();
+var obj2 = CouldBeNull() ?? Assume.Reject<string>(message);
+```
+
+### That
+
+Assumes that the specified condition is fulfilled:
+
+```csharp
+Assume.That(condition);
+Assume.That(() => condition);
+Assume.That(condition, "condition should be true");
+
+var str = "something";
+str.AssumeThat(x => !string.IsNullOrEmpty(x), "str should not be null or empty");
+str.Assume()
+   .That(x => !string.IsNullOrEmpty(x), "str should not be null or empty");
+```
+
+### True
+
+Assumes that the specified condition is true:
+
+```csharp
+Assume.True(condition);
+Assume.True(() => condition);
+Assume.True(condition, "condition should be true");
+
+condition.AssumeTrue();
+condition.AssumeTrue("condition should be true");
+
+condition.Assume().True();
+condition.Assume().True("condition should be true");
+
+var str = "something";
+str.Assume()
+   .True(x => !string.IsNullOrEmpty(x), "str should not be null or empty");
 ```
 
 ## Examples

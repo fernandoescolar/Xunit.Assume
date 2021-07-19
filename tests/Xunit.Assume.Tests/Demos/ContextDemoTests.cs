@@ -16,7 +16,7 @@ namespace Xunit.Tests
         Active
     }
 
-    public class Target 
+    public class Target
     {
         private readonly IContext _context;
 
@@ -50,7 +50,7 @@ namespace Xunit.Tests
             var target = new Target(new FakeContext(initialState));
 
             // Assume
-            Assume.NotEquals(initialState, States.Active, "Can execute only in not Active state");
+            Assume.NotEqual(initialState, States.Active, "Can execute only in not Active state");
 
             // Act
             var actual = target.Execute();
