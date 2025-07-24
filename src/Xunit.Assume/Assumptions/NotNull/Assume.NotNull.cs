@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Xunit
 {
@@ -19,7 +20,7 @@ namespace Xunit
         /// <returns>
         ///     The specified object.
         /// </returns>
-        public static T NotNull<T>(T obj, string message = null)
+        public static T? NotNull<T>(T obj, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
             => That(obj != null, message) ? obj : default;
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace Xunit
         /// <returns>
         ///     The object returned in the <paramref name="getter" />.
         /// </returns>
-        public static T NotNull<T>(Func<T> getter, string message = null)
-            => NotNull(getter(), message);
+        public static T? NotNull<T>(Func<T> getter, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => NotNull(getter(), message, callerFilePath, callerLineNumber);
     }
 }

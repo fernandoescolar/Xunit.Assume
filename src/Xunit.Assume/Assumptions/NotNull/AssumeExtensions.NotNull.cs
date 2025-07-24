@@ -1,4 +1,6 @@
-﻿namespace Xunit
+﻿using System.Runtime.CompilerServices;
+
+namespace Xunit
 {
     public static partial class AssumeExtensions
     {
@@ -17,7 +19,7 @@
         /// <returns>
         ///     The specified object.
         /// </returns>
-        public static T AssumeNotNull<T>(this T obj, string message = null)
-            => Assume.NotNull(obj, message);
+        public static T? AssumeNotNull<T>(this T obj, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => Assume.NotNull(obj, message, callerFilePath, callerLineNumber);
     }
 }

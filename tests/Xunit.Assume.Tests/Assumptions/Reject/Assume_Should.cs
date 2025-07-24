@@ -11,7 +11,7 @@ namespace Xunit.Tests.Reject
             {
                 Assume.Reject();
             }
-            catch (AssumeException)
+            catch (AssumptionFailedException)
             {
                 return;
             }
@@ -23,14 +23,18 @@ namespace Xunit.Tests.Reject
         public void throw_assume_exception_with_specific_message()
         {
             const string message = "my_message";
+            const string fileName = "my_file_name";
+            const int lineNumber = 3;
 
             try
             {
-                Assume.Reject(message);
+                Assume.Reject(message, fileName, lineNumber);
             }
-            catch (AssumeException ex)
+            catch (AssumptionFailedException ex)
             {
-                Assert.Equal(message, ex.Message);
+                Assert.Contains(message, ex.Message);
+                Assert.Contains(fileName, ex.Message);
+                Assert.Contains(lineNumber.ToString(), ex.Message);
                 return;
             }
 
@@ -45,7 +49,7 @@ namespace Xunit.Tests.Reject
                 var null_object = (object)null;
                 var s = null_object ?? Assume.Reject<string>();
             }
-            catch (AssumeException)
+            catch (AssumptionFailedException)
             {
                 return;
             }
@@ -61,7 +65,7 @@ namespace Xunit.Tests.Reject
                 var null_object = (object)null;
                 var s = null_object ?? Assume.Reject(null_object);
             }
-            catch (AssumeException)
+            catch (AssumptionFailedException)
             {
                 return;
             }

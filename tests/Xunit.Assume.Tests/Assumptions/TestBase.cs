@@ -5,13 +5,13 @@ namespace Xunit.Tests
 {
     public abstract class TestBase
     {
-        protected void AssertThrowAssumeException(Action act)
+        protected void AssertThrowAssumptionException(Action act)
         {
             try
             {
                 act();
             }
-            catch (AssumeException)
+            catch (AssumptionFailedException)
             {
                 return;
             }
@@ -19,28 +19,28 @@ namespace Xunit.Tests
             throw new XunitException("Expected AssumeException has not been thrown!");
         }
 
-        protected void AssertThrowAssumeExceptionWithMessage(Action act, string expectedMessage)
+        protected void AssertThrowAssumptionExceptionWithMessage(Action act, string expectedMessage)
         {
             try
             {
                 act();
             }
-            catch (AssumeException ex)
+            catch (AssumptionFailedException ex)
             {
-                Assert.Equal(expectedMessage, ex.Message);
+                Assert.StartsWith(expectedMessage, ex.Message);
                 return;
             }
 
             throw new XunitException("Expected AssumeException has not been thrown!");
         }
 
-        protected void AssertAssumeExceptionNotThrown(Action act)
+        protected void AssertAssumptionExceptionNotThrown(Action act)
         {
             try
             {
                 act();
             }
-            catch (AssumeException)
+            catch (AssumptionFailedException)
             {
                 throw new XunitException("Unexpected AssumeException has been thrown!");
             }

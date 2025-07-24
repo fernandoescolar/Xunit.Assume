@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Xunit
 {
@@ -16,8 +17,10 @@ namespace Xunit
         /// <returns>
         ///     <see cref="true" /> when the specified <paramref name="condition" /> is true.
         /// </returns>
-        public static bool That(bool condition, string message = null)
-            => !condition ? Reject(condition, message) : true;
+        public static bool That(bool condition, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => condition
+                ? true
+                : Reject<bool>(message, callerFilePath, callerLineNumber);
 
         /// <summary>
         ///     Assumes that the specified <paramref name="condition" /> is true.
@@ -31,7 +34,7 @@ namespace Xunit
         /// <returns>
         ///     <see cref="true" /> when the specified <paramref name="condition" /> is true.
         /// </returns>
-        public static bool That(Func<bool> condition, string message = null)
-            => That(condition(), message);
+        public static bool That(Func<bool> condition, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => That(condition(), message, callerFilePath, callerLineNumber);
     }
 }

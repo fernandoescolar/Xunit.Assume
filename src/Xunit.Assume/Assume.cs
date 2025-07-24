@@ -1,4 +1,9 @@
-﻿using Xunit.Sdk;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.ExceptionServices;
+using System.Text;
+using Xunit.Sdk;
 
 namespace Xunit
 {
@@ -11,7 +16,27 @@ namespace Xunit
     {
         private const string DefaultAssumeRejectedMessage = "Assume rule not fulfilled";
 
-        private static AssumeException CreateAssumeException(string message = null)
-            => new AssumeException(message ?? DefaultAssumeRejectedMessage);
+        private static AssumptionFailedException CreateAssumptionFailedException(string? message = null, string? callerFilePath = null, int callerLineNumber = 0)
+        {
+            var sb = new StringBuilder();
+            if (string.IsNullOrEmpty(message))
+            {
+                sb.Append(DefaultAssumeRejectedMessage);
+            }
+            else
+            {
+                sb.Append(message);
+            }
+            if (!string.IsNullOrEmpty(callerFilePath))
+            {
+                var callerFileName = System.IO.Path.GetFileName(callerFilePath);
+                sb.Append($" (called from {callerFileName}:{callerLineNumber})");
+            }
+
+            var formattedMessage = sb.ToString();
+            var exception = new AssumptionFailedException(formattedMessage);
+
+            return exception;
+        }
     }
 }

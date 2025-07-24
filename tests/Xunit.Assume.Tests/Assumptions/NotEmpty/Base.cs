@@ -7,15 +7,15 @@
 
         [Fact]
         public void throw_exception_when_string_is_empty()
-            => AssertThrowAssumeException(() => Act(string.Empty));
+            => AssertThrowAssumptionException(() => Act(string.Empty));
 
         [Fact]
         public void throw_exception_when_string_is_empty_with_specific_message()
-            => AssertThrowAssumeExceptionWithMessage(() => Act(string.Empty, AnyExceptionMessage), AnyExceptionMessage);
+            => AssertThrowAssumptionExceptionWithMessage(() => Act(string.Empty, AnyExceptionMessage), AnyExceptionMessage);
 
         [Fact]
         public void do_nothing_when_string_is_not_empty()
-            => AssertAssumeExceptionNotThrown(() => Act(NotEmptyString));
+            => AssertAssumptionExceptionNotThrown(() => Act(NotEmptyString));
 
         [Fact]
         public void return_the_same_string_value_when_it_is_not_empty()

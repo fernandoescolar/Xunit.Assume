@@ -8,15 +8,15 @@
 
         [Fact]
         public void throw_exception_when_objects_are_equal()
-            => AssertThrowAssumeException(() => Act(ObjectA, ObjectA));
+            => AssertThrowAssumptionException(() => Act(ObjectA, ObjectA));
 
         [Fact]
         public void throw_exception_when_objects_are_equal_with_specific_message()
-            => AssertThrowAssumeExceptionWithMessage(() => Act(ObjectA, ObjectA, AnyExceptionMessage), AnyExceptionMessage);
+            => AssertThrowAssumptionExceptionWithMessage(() => Act(ObjectA, ObjectA, AnyExceptionMessage), AnyExceptionMessage);
 
         [Fact]
         public void do_nothing_when_objects_are_not_equal()
-            => AssertAssumeExceptionNotThrown(() => Act(ObjectA, ObjectB));
+            => AssertAssumptionExceptionNotThrown(() => Act(ObjectA, ObjectB));
 
         [Fact]
         public void return_true_when_objects_are_not_equal()

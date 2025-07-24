@@ -4,11 +4,10 @@ namespace Xunit.Tests
     {
         private const string NotNullString = "not null";
 
-        [AssumeFact]
         public void IssueTest()
         {
             var expected = NotNullString;
-            var value1 = CouldBeNull() ?? Assume.Reject<string>("Can not be null");
+            var value1 = CouldBeNull() ?? Assume.Reject<string>(default(string), "Can not be null", string.Empty, 0);
             var value2 = Assume.NotNull(CouldBeNull(), "Can not be null");
             var value3 = CouldBeNull().AssumeNotNull("Can not be null");
             var value4 = CouldBeNull().Assume()
