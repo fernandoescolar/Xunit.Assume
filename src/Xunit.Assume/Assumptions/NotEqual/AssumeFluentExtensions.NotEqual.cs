@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Xunit
 {
     public static partial class AssumeFluentExtensions
@@ -20,7 +22,7 @@ namespace Xunit
         /// <returns>
         ///     <see cref="true" /> when objects are not equal.
         /// </returns>
-        public static bool NotEqual<T>(this AssumeFluent<T> assumption, T target, string message = null)
-            => Xunit.Assume.NotEqual(assumption.InnerObject, target, message);
+        public static bool NotEqual<T>(this AssumeFluent<T> assumption, T target, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => Xunit.Assume.NotEqual(assumption.InnerObject, target, message, callerFilePath, callerLineNumber);
     }
 }

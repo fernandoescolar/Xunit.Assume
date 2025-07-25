@@ -9,15 +9,15 @@
 
         [Fact]
         public void throw_exception_when_condition_is_fulfilled()
-            => AssertThrowAssumeException(() => Act(Success));
+            => AssertThrowAssumptionException(() => Act(Success));
 
         [Fact]
         public void throw_exception_when_condition_is_fulfilled_with_specific_message()
-            => AssertThrowAssumeExceptionWithMessage(() => Act(Success, AnyExceptionMessage), AnyExceptionMessage);
+            => AssertThrowAssumptionExceptionWithMessage(() => Act(Success, AnyExceptionMessage), AnyExceptionMessage);
 
         [Fact]
         public void do_nothing_when_condition_is_not_fulfilled()
-            => AssertAssumeExceptionNotThrown(() => Act(Failure));
+            => AssertAssumptionExceptionNotThrown(() => Act(Failure));
 
         [Fact]
         public void return_true_when_condition_is_not_fulfilled()

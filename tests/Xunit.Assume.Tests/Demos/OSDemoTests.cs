@@ -4,7 +4,6 @@ namespace Xunit.Tests
 {
     public class OSDemoTests
     {
-        [AssumeFact]
         public void AssumeWindows()
         {
             // Arrange

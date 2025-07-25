@@ -41,7 +41,6 @@ namespace Xunit.Tests
 
     public class Test
     {
-        [AssumeTheory]
         [MemberData(nameof(GetAllStatesValues))]
         public void Target_Execute(States initialState)
         {

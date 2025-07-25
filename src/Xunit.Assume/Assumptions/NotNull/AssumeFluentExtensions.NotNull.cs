@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace Xunit
 {
     public static partial class AssumeFluentExtensions
@@ -17,7 +19,7 @@ namespace Xunit
         /// <returns>
         ///     The specified object.
         /// </returns>
-        public static T NotNull<T>(this AssumeFluent<T> assumption, string message = null)
-            => Xunit.Assume.NotNull(assumption.InnerObject, message);
+        public static T? NotNull<T>(this AssumeFluent<T> assumption, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => Xunit.Assume.NotNull(assumption.InnerObject, message, callerFilePath, callerLineNumber);
     }
 }

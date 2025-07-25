@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Xunit
 {
@@ -16,8 +17,8 @@ namespace Xunit
         /// <returns>
         ///     <see cref="true" /> when condition is false.
         /// </returns>
-        public static bool False(this AssumeFluent<bool> assumption, string message = null)
-            => Xunit.Assume.False(assumption.InnerObject, message);
+        public static bool False(this AssumeFluent<bool> assumption, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => Xunit.Assume.False(assumption.InnerObject, message, callerFilePath, callerLineNumber);
 
         /// <summary>
         ///     Assume that the specified condition is false.
@@ -34,7 +35,7 @@ namespace Xunit
         /// <returns>
         ///     <see cref="true" /> when condition is false.
         /// </returns>
-        public static T False<T>(this AssumeFluent<T> assumption, Func<T, bool> condition, string message = null)
-            => Xunit.Assume.False(condition(assumption.InnerObject), message) ? assumption.InnerObject : default;
+        public static T? False<T>(this AssumeFluent<T> assumption, Func<T, bool> condition, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => Xunit.Assume.False(condition(assumption.InnerObject), message, callerFilePath, callerLineNumber) ? assumption.InnerObject : default;
  }
 }

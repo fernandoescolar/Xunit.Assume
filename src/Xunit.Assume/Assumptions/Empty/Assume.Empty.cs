@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Xunit
 {
@@ -21,8 +22,8 @@ namespace Xunit
         /// <returns>
         ///     The specified enumerable to be tested.
         /// </returns>
-        public static T Empty<T>(T enumerable, string message = null) where T : IEnumerable
-            => That(!enumerable.Cast<object>().Any(), message) ? enumerable : default;
+        public static T? Empty<T>(T enumerable, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0) where T : IEnumerable
+            => That(!enumerable.Cast<object>().Any(), message, callerFilePath, callerLineNumber) ? enumerable : default;
 
         /// <summary>
         ///     Assumes that the specified enumerable returned in <paramref name="getter" /> is empty.
@@ -39,7 +40,7 @@ namespace Xunit
         /// <returns>
         ///     The specified enumerable to be tested.
         /// </returns>
-        public static T Empty<T>(Func<T> getter, string message = null) where T : IEnumerable
-            => Empty(getter(), message);
+        public static T? Empty<T>(Func<T> getter, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0) where T : IEnumerable
+            => Empty(getter(), message, callerFilePath, callerLineNumber);
     }
 }

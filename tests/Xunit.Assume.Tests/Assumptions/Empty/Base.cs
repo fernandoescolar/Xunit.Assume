@@ -1,4 +1,6 @@
-﻿namespace Xunit.Tests.Empty
+﻿using System.Runtime.CompilerServices;
+
+namespace Xunit.Tests.Empty
 {
     public abstract class Base : TestBase
     {
@@ -7,20 +9,32 @@
 
         [Fact]
         public void throw_exception_when_string_is_not_empty()
-            => AssertThrowAssumeException(() => Act(NotEmptyString));
+            => AssertThrowAssumptionException(() => Act(NotEmptyString));
 
         [Fact]
         public void throw_exception_when_string_is_not_empty_with_specific_message()
-            => AssertThrowAssumeExceptionWithMessage(() => Act(NotEmptyString, AnyExceptionMessage), AnyExceptionMessage);
+        {
+            string expectedMessage = GetExpectedErrorMessage(AnyExceptionMessage);
+            AssertThrowAssumptionExceptionWithMessage(() => {
+                Act(NotEmptyString, AnyExceptionMessage);
+            }, expectedMessage);
+        }
 
         [Fact]
         public void do_nothing_when_string_is_empty()
-            => AssertAssumeExceptionNotThrown(() => Act(string.Empty));
+            => AssertAssumptionExceptionNotThrown(() => Act(string.Empty));
 
         [Fact]
         public void return_an_empty_string_value_when_it_is_empty()
             => Assert.Equal(string.Empty, Act(string.Empty));
 
-        protected abstract string Act(string input, string message = null);
+        protected abstract string? Act(string input, string? message = null);
+
+        protected abstract string GetExpectedErrorMessage(string? message);
+
+        protected static string GetCurrentFilePath([CallerFilePath] string filePath = "")
+        {
+            return filePath;
+        }
     }
 }

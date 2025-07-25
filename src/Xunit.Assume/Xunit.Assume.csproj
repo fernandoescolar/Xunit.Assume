@@ -7,21 +7,21 @@
 
   <PropertyGroup>
     <IsPackable>true</IsPackable>
-    <PackageId>Xunit.Assume</PackageId>
-    <PackageVersion>2.0.0</PackageVersion>
+    <PackageId>Xunit.v3.Assume</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
     <PackageIcon>icon.png</PackageIcon>
-    <Authors>fernandoescolar</Authors>
+    <Authors>madslnz</Authors>
     <Description>This library helps you implementing your unit tests following the 4-A, "AAAA" or Arrange-Assume-Act-Assert philosophy, with Xunit.</Description>
-    <RepositoryUrl>https://github.com/fernandoescolar/Xunit.Assume</RepositoryUrl>
+    <RepositoryUrl>https://github.com/madslnz/Xunit.v3.Assume</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
-    <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
+    <PackageReference Include="xunit.v3.extensibility.core" Version="3.0.0" />
+    <PackageReference Include="xunit.v3.assert" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="icon.png" Pack="true" PackagePath=""/>
+    <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>

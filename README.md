@@ -51,28 +51,51 @@ public void AAAA_Test()
 }
 ```
 
-If you don't fulfill an `Assume` what you mean is this test should be skipped because it makes no sense to test it.
+If you don't fulfill an `Assume` what you mean is this test should fail because it makes no sense to run it without the conditions being met.
 
-So `xUnit.Assume` extends the original `xUnit` open source library to help us following this pattern.
+So `xUnit.v3.Assume` extends the original `xUnit` open source library to help us following this pattern.
+It's based on the original `xUnit.Assume` package by `fernandoescolar`.
+
+The behavior changed a bit, because of the changes to the xUnit package.
+There is no need anymore to mark the test methods with a specialized attribute.
+Simply use the `Fact` and `Theory` attributes shipping with `xUnit.v3`.
+A failed Assumption now throws an exception of the type `Xunit.AssumptionFailedException` and fails the test.
+This can be used to easily fail CI/CD pipelines when an assumption is not met.
+To disable this behavior simply add the `Xunit.AssumptionFailedException` to the `SkipException` property of the test attribute.
+
+Example of a failing test
+```cs
+[Fact]
+public void Test_FailsOnAssumptionNotMet()
+{
+    Assume.True(false, "Is not true");
+}
+```
+
+Example of a skipped test on assumption not met
+```cs
+[Fact(SkipException=[typeof(Xunit.AssumptionFailedException)])]
+public void Test_SkippedOnAssumptionNotMet()
+{
+    Assume.True(false, "Is not true");
+}
+```
+
 
 ## Using xUnit.Assume
 
-You can install `xUnit.Assume` using NuGet in dotnet core:
+You can install `xUnit.v3.Assume` using NuGet in dotnet core:
 
 ```bash
-dotnet add package xUnit.Assume
+dotnet add package xUnit.v3.Assume
 ```
 
-It will add some new artifacts to help you testing:
-
-- `Assume` is an static class to use assume clausules.
-- `AssumeFact` is an attribute to substitute the original `Fact` attribute, to take care of assume conditions.
-- `AssumeTheory` is an attribute to substitute the original `Theory` attribute, to take care of assume conditions.
+It will add the new `Assume` keyword, which is a static class to use assume clausules.
 
 If you want assume that the current state is correct, using the artifacts above you can skip a `xUnit` by giving a meaning or reason to it:
 
 ```csharp
-[AssumeFact]
+[Fact]
 public void AssumeFactTest()
 {
     // Arrange
@@ -87,16 +110,14 @@ public void AssumeFactTest()
 }
 ```
 
-In this code, if the `Assume` condition is not fulfilled, the test will be skipped.
-
-You can use assume with `AssumeTheory` decorators:
+In this code, if the `Assume` condition is not fulfilled, the test will fail with a `Xunit.AssumptionFailedException`.
 
 ```csharp
-[AssumeTheory]
+[Theory]
 [InlineData(-1)]
 [InlineData(0)]
 [InlineData(1)]
-public void AssumeFactTest(int some_var)
+public void AssumeTheoryTest(int some_var)
 {
     // Arrange
 
@@ -318,7 +339,7 @@ str.Assume()
 With dotnet core, your tests could be runned in any platform. Maybe your test is only ready for Windows platforms. You can use `Assume` to skip this test when the current execution platform is not the expected one:
 
 ```csharp
-[AssumeFact]
+[Fact]
 public void AssumeWindows()
 {
     // Arrange
@@ -355,7 +376,7 @@ public void BugFixedChecker()
     // Assert
 }
 
-[AssumeFact]
+[Fact]
 public void AssumeBugsAreFixed()
 {
     Assume.True(BugIsFixed("121"), "Bug #121 has not been fixed yet");
@@ -367,8 +388,6 @@ public void AssumeBugsAreFixed()
     // Assert
 }
 ```
-
-You can see full impementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/Demos/BugsDemoTests.cs).
 
 ### Context value
 
@@ -416,7 +435,7 @@ Going deep in to the code you can determine when the `state` stored in the conte
 For this case you may want to explicitly notify other developers about this special behavior. To achieve this you can use `Assume` to skip the test when `state` is `Active`:
 
 ```csharp
-[AssumeTheory]
+[Theory]
 [MemberData(nameof(GetAllStatesValues))]
 public void Target_Execute(States initialState)
 {
@@ -442,7 +461,7 @@ You can see full impementation of this example [here](https://github.com/fernand
 To reject an assumption in any other scenario you can use the `Reject` method:
 
 ```csharp
-[AssumeFact]
+[Fact]
 public void AssumeBugsAreFixed()
 {
     Assume.Reject("I think I should skip this test without failing");

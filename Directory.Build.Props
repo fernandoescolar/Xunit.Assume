@@ -1,0 +1,10 @@
+<Project>
+    <PropertyGroup Label="Compiler Flags">
+        <LangVersion>Latest</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileFullPath)" Link="targets\Directory.Build.props" />
+    </ItemGroup>
+</Project>

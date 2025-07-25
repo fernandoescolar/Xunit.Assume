@@ -1,4 +1,6 @@
-﻿namespace Xunit
+﻿using System.Runtime.CompilerServices;
+
+namespace Xunit
 {
     public static partial class AssumeExtensions
     {
@@ -20,7 +22,7 @@
         /// <returns>
         ///     <see cref="true" /> when objects are not equal.
         /// </returns>
-        public static bool AssumeNotEqual<T>(this T expected, T target, string message = null)
-            => Assume.NotEqual(expected, target, message);
+        public static bool AssumeNotEqual<T>(this T expected, T target, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => Assume.NotEqual(expected, target, message, callerFilePath, callerLineNumber);
     }
 }
