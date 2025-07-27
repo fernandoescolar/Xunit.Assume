@@ -7,7 +7,7 @@
 
         [Fact]
         public void throw_exception_when_object_is_null()
-            => AssertThrowAssumptionException(() => Act(null));
+            => AssertThrowAssumptionException(() => Act());
 
         [Fact]
         public void throw_exception_when_object_is_null_with_specific_message()
@@ -21,6 +21,6 @@
         public void return_the_same_object_value_when_it_is_not_null()
             => Assert.Equal(NotNullObject, Act(NotNullObject));
 
-        protected abstract object Act(object input, string message = null);
+        protected abstract object Act(object? input = null, string? message = null);
     }
 }

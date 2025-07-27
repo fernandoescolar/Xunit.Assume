@@ -18,7 +18,8 @@ namespace Xunit.Tests
             // Assert
         }
 
-        public void AssumeBugsAreFixed()
+        [Fact]
+        public static void AssumeBugsAreFixed()
         {
             Assume.True(BugIsFixed("121"), "Bug #121 has not been fixed yet");
 

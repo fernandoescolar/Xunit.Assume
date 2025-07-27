@@ -25,6 +25,6 @@ namespace Xunit.Tests.Equals
         public void return_true_when_objects_are_equal()
             => Assert.True(Act(ObjectA, ObjectA));
 
-        protected abstract bool Act(object objA, object objB, string message = null);
+        protected abstract bool Act(object objA, object objB, string? message = null);
     }
 }

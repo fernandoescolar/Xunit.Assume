@@ -23,6 +23,6 @@
         public void return_true_when_condition_is_fulfilled()
             => Assert.True(Act(Success));
 
-        protected abstract bool Act(bool condition, string message = null);
+        protected abstract bool Act(bool condition, string? message = null);
     }
 }

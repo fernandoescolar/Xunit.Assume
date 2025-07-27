@@ -137,31 +137,31 @@ The static artifact `Assume` has the contract bellow:
 ```csharp
 class Assume
 {
-    T Empty<T>(T str, string message = null) where T : IEnumerable;
-    T Empty<T>(Func<T> getter, string message = null)where T : IEnumerable;
+    T Empty<T>(T str, string? message = null) where T : IEnumerable;
+    T Empty<T>(Func<T> getter, string? message = null)where T : IEnumerable;
 
-    bool Equal<T>(T expected, T target, string message = null);
+    bool Equal<T>(T expected, T target, string? message = null);
 
-    bool False(bool condition, string message = null);
-    bool False(Func<bool> condition, string message = null);
+    bool False(bool condition, string? message = null);
+    bool False(Func<bool> condition, string? message = null);
 
-    T NotEmpty<T>(T str, string message = null) where T : IEnumerable;
-    T NotEmpty<T>(Func<T> getter, string message = null) where T : IEnumerable;
+    T NotEmpty<T>(T str, string? message = null) where T : IEnumerable;
+    T NotEmpty<T>(Func<T> getter, string? message = null) where T : IEnumerable;
 
-    bool NotEqual<T>(T expected, T target, string message = null);
+    bool NotEqual<T>(T expected, T target, string? message = null);
 
-    T NotNull<T>(T obj, string message = null);
-    T NotNull<T>(Func<T> getter, string message = null);
+    T NotNull<T>(T obj, string? message = null);
+    T NotNull<T>(Func<T> getter, string? message = null);
 
-    void Reject(string message = null);
-    T Reject<T>(string message = null);
-    T Reject<T>(T source, string message = null);
+    void Reject(string? message = null);
+    T Reject<T>(string? message = null);
+    T Reject<T>(T source, string? message = null);
 
-    bool That(bool condition, string message = null);
-    bool That(Func<bool> condition, string message = null);
+    bool That(bool condition, string? message = null);
+    bool That(Func<bool> condition, string? message = null);
 
-    bool True(bool condition, string message = null);
-    bool True(Func<bool> condition, string message = null);
+    bool True(bool condition, string? message = null);
+    bool True(Func<bool> condition, string? message = null);
 }
 ```
 

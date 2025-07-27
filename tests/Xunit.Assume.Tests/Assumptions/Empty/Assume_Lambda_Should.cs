@@ -5,9 +5,9 @@ namespace Xunit.Tests.Empty
         protected override string Act(string input, string? message = null)
         {
             if (string.IsNullOrEmpty(message))
-                return Assume.Empty(() => input);
+                return Assume.Empty(() => input)!;
 
-            return Assume.Empty(() => input, message);
+            return Assume.Empty(() => input, message)!;
         }
 
         protected override string GetExpectedErrorMessage(string? message)

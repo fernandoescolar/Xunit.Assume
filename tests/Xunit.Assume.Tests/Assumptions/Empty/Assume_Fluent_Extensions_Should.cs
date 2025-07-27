@@ -9,9 +9,9 @@ namespace Xunit.Tests.Empty
             input = input ?? throw new ArgumentNullException(nameof(input), "Invalid test");
 
             if (string.IsNullOrEmpty(message))
-                return input.Assume().Empty();
+                return input.Assume().Empty()!;
 
-            return input.Assume().Empty(message);
+            return input.Assume().Empty(message)!;
         }
 
         protected override string GetExpectedErrorMessage(string? message)

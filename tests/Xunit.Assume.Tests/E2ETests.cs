@@ -4,24 +4,28 @@ namespace Xunit.Tests
     {
         private const string SkipMessage = "Assumption not fulfilled";
 
+        [Theory]
         [InlineData(SkipMessage)]
-        public void AssumeTheory_should_be_skipped_when_assumption_is_not_fulfilled(string message)
+        public static void AssumeTheory_should_be_skipped_when_assumption_is_not_fulfilled(string message)
         {
             Assume.False(true, message);
         }
 
+        [Theory]
         [InlineData(SkipMessage)]
-        public void AssumeTheory_should_not_be_skipped_when_assumption_is_fulfilled(string message)
+        public static void AssumeTheory_should_not_be_skipped_when_assumption_is_fulfilled(string message)
         {
             Assume.False(false, message);
         }
 
-        public void AssumeFact_should_be_skipped_when_assumption_is_not_fulfilled()
+        [Fact]
+        public static void AssumeFact_should_be_skipped_when_assumption_is_not_fulfilled()
         {
             Assume.False(true, SkipMessage);
         }
 
-        public void AssumeFact_should_not_be_skipped_when_assumption_is_fulfilled()
+        [Fact]
+        public static void AssumeFact_should_not_be_skipped_when_assumption_is_fulfilled()
         {
             Assume.False(false, SkipMessage);
         }

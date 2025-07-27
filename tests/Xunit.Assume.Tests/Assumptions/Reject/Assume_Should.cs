@@ -46,7 +46,7 @@ namespace Xunit.Tests.Reject
         {
             try
             {
-                var null_object = (object)null;
+                var null_object = default(object);
                 var s = null_object ?? Assume.Reject<string>();
             }
             catch (AssumptionFailedException)
@@ -62,7 +62,7 @@ namespace Xunit.Tests.Reject
         {
             try
             {
-                var null_object = (object)null;
+                var null_object = default(object);
                 var s = null_object ?? Assume.Reject(null_object);
             }
             catch (AssumptionFailedException)

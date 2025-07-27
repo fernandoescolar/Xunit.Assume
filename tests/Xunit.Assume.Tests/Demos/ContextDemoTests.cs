@@ -41,6 +41,7 @@ namespace Xunit.Tests
 
     public class Test
     {
+        [Theory]
         [MemberData(nameof(GetAllStatesValues))]
         public void Target_Execute(States initialState)
         {
@@ -70,7 +71,7 @@ namespace Xunit.Tests
 
             return Enum.GetValues(enumType)
                     .Cast<T>()
-                    .Select(x => new object[] { x });
+                    .Select(x => new object[] { x! });
         }
     }
 

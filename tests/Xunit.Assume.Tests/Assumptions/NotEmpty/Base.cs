@@ -21,6 +21,6 @@
         public void return_the_same_string_value_when_it_is_not_empty()
             => Assert.Equal(NotEmptyString, Act(NotEmptyString));
 
-        protected abstract string Act(string input, string message = null);
+        protected abstract string Act(string input, string? message = null);
     }
 }

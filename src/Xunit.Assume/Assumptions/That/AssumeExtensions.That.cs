@@ -23,7 +23,7 @@ namespace Xunit
         /// <returns>
         ///     <see cref="true" /> when the specified <paramref name="condition" /> is true.
         /// </returns>
-        public static T? AssumeThat<T>(this T obj, Func<T, bool> condition, string? message = null, [CallerFilePath] string callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+        public static T? AssumeThat<T>(this T obj, Func<T, bool> condition, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
             => Assume.That(condition(obj), message, callerFilePath, callerLineNumber) ? obj : default;
     }
 }
