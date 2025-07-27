@@ -41,7 +41,7 @@ namespace Xunit.Tests
 
     public class Test
     {
-        [Theory]
+        [Theory(SkipExceptions = [typeof(AssumptionFailedException)])]
         [MemberData(nameof(GetAllStatesValues))]
         public void Target_Execute(States initialState)
         {
