@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace Xunit
 {
@@ -19,7 +20,7 @@ namespace Xunit
         /// <returns>
         ///     The specified enumerable to be tested.
         /// </returns>
-        public static T NotEmpty<T>(this AssumeFluent<T> assumption, string message = null) where T : IEnumerable
-            => Xunit.Assume.NotEmpty(assumption.InnerObject, message);
+        public static T? NotEmpty<T>(this AssumeFluent<T> assumption, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0) where T : IEnumerable
+            => Xunit.Assume.NotEmpty(assumption.InnerObject, message, callerFilePath, callerLineNumber);
     }
 }

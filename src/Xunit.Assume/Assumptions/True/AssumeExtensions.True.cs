@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Xunit
 {
@@ -22,7 +23,7 @@ namespace Xunit
         /// <returns>
         ///     <see cref="true" /> when the specified <paramref name="condition" /> is true.
         /// </returns>
-        public static bool AssumeTrue(this bool condition, string message = null)
+        public static bool AssumeTrue(this bool condition, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
             => Assume.True(condition, message);
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace Xunit
         /// <returns>
         ///     The <paramref name="source" /> object.
         /// </returns>
-        public static T AssumeTrue<T>(this T source, Func<T, bool> condition, string message = null)
-            => Xunit.Assume.True(condition(source), message) ? source : default;
+        public static T? AssumeTrue<T>(this T source, Func<T, bool> condition, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => Assume.True(condition(source), message, callerFilePath, callerLineNumber) ? source : default;
     }
 }

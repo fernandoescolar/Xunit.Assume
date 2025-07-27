@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Xunit
 {
@@ -16,8 +17,8 @@ namespace Xunit
         /// <returns>
         ///     <see cref="true" /> when condition is false.
         /// </returns>
-        public static bool False(bool condition, string message = null)
-            => That(!condition, message);
+        public static bool False(bool condition, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => That(!condition, message, callerFilePath, callerLineNumber);
 
         /// <summary>
         ///     Assume that the specified condition is false.
@@ -31,7 +32,7 @@ namespace Xunit
         /// <returns>
         ///     <see cref="true" /> when condition is false.
         /// </returns>
-        public static bool False(Func<bool> condition, string message = null)
-            => False(condition(), message);
+        public static bool False(Func<bool> condition, string? message = null, [CallerFilePath] string? callerFilePath = null, [CallerLineNumber] int callerLineNumber = 0)
+            => False(condition(), message, callerFilePath, callerLineNumber);
  }
 }
