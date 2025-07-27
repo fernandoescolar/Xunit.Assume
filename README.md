@@ -1,6 +1,7 @@
+
 # xUnit.Assume
 
-In unit tesing the 3-As (Arrange-Act-Assert or "AAA") is pattern for arranging and formatting code in unit test methods. It is defined as each method should group these functional sections separated by blank lines:
+In unit testing, the 3-As (Arrange-Act-Assert or "AAA") is a pattern for organizing and formatting code in unit test methods. Each method should group these functional sections, separated by blank lines:
 
 ```csharp
 [Fact]
@@ -19,16 +20,15 @@ public void AAA_Test()
 }
 ```
 
-Ideally, the developer writing a test has control of all of the forces that might cause a test to fail. However, sometimes this is not desirable or possible. For example, if a test fails when run in a different locale than the developer intended, it can be fixed by explicitly passing a locale to the domain code. But if this isn't immediately possible, making dependencies explicit can often improve a design.
 
-Keeping this in mind, the best way is to use an extension on the 3-As pattern called "AAAA" or Arrange-Assume-Act-Assert pattern. Where:
+Ideally, the developer writing a test has control over all the factors that might cause a test to fail. However, sometimes this is not desirable or possible. For example, if a test fails when run in a different locale than the developer intended, it can be fixed by explicitly passing a locale to the domain code. But if this isn't immediately possible, making dependencies explicit can often improve the design.
+
+With this in mind, a useful extension to the 3-As pattern is called "AAAA" or Arrange-Assume-Act-Assert. In this pattern:
+
 
 - **Arrange** the execution context in its initial configuration. Create any test doubles you may need. Initialize artifacts.
-
-- **Assume** that the initial state is correct. Because some tests have no sense with some expected conditions.
-
-- **Act** on the object or method under testing.
-
+- **Assume** that the initial state is correct. Some tests do not make sense unless certain conditions are met.
+- **Act** on the object or method under test.
 - **Assert** that the expected results have occurred.
 
 ```csharp
@@ -51,19 +51,19 @@ public void AAAA_Test()
 }
 ```
 
-If you don't fulfill an `Assume` what you mean is this test should fail because it makes no sense to run it without the conditions being met.
 
-So `xUnit.v3.Assume` extends the original `xUnit` open source library to help us following this pattern.
-It's based on the original `xUnit.Assume` package by `fernandoescolar`.
+If an `Assume` is not fulfilled, it means the test should fail because it makes no sense to run it without the required conditions being met.
 
-The behavior changed a bit, because of the changes to the xUnit package.
-There is no need anymore to mark the test methods with a specialized attribute.
-Simply use the `Fact` and `Theory` attributes shipping with `xUnit.v3`.
-A failed Assumption now throws an exception of the type `Xunit.AssumptionFailedException` and fails the test.
-This can be used to easily fail CI/CD pipelines when an assumption is not met.
-To disable this behavior simply add the `Xunit.AssumptionFailedException` to the `SkipException` property of the test attribute.
+`xUnit.v3.Assume` extends the original `xUnit` open source library to help you follow this pattern. It is based on the original `xUnit.Assume` package by `fernandoescolar`.
 
-Example of a failing test
+The behavior has changed slightly due to updates in the xUnit package:
+- There is no longer a need to mark test methods with a specialized attribute.
+- Simply use the `Fact` and `Theory` attributes provided by `xUnit.v3`.
+- A failed assumption now throws an exception of type `Xunit.AssumptionFailedException` and fails the test.
+- This can be used to easily fail CI/CD pipelines when an assumption is not met.
+- To disable this behavior, simply add `Xunit.AssumptionFailedException` to the `SkipException` property of the test attribute.
+
+Example of a failing test:
 ```cs
 [Fact]
 public void Test_FailsOnAssumptionNotMet()
@@ -72,7 +72,7 @@ public void Test_FailsOnAssumptionNotMet()
 }
 ```
 
-Example of a skipped test on assumption not met
+Example of a skipped test when an assumption is not met:
 ```cs
 [Fact(SkipException=[typeof(Xunit.AssumptionFailedException)])]
 public void Test_SkippedOnAssumptionNotMet()
@@ -84,15 +84,22 @@ public void Test_SkippedOnAssumptionNotMet()
 
 ## Using xUnit.Assume
 
-You can install `xUnit.v3.Assume` using NuGet in dotnet core:
+
+You can install `xUnit.v3.Assume` using NuGet in .NET Core:
 
 ```bash
 dotnet add package xUnit.v3.Assume
 ```
 
-It will add the new `Assume` keyword, which is a static class to use assume clausules.
+For old xUnit versions, you can install `Xunit.Assume`:
 
-If you want assume that the current state is correct, using the artifacts above you can skip a `xUnit` by giving a meaning or reason to it:
+```bash
+dotnet add package Xunit.Assume
+```
+
+This will add the new `Assume` keyword, which is a static class for using assumption clauses.
+
+If you want to assume that the current state is correct, you can skip a test by providing a reason:
 
 ```csharp
 [Fact]
@@ -109,6 +116,7 @@ public void AssumeFactTest()
     // Assert
 }
 ```
+
 
 In this code, if the `Assume` condition is not fulfilled, the test will fail with a `Xunit.AssumptionFailedException`.
 
@@ -132,7 +140,8 @@ public void AssumeTheoryTest(int some_var)
 
 ## Assume
 
-The static artifact `Assume` has the contract bellow:
+
+The static class `Assume` has the following contract:
 
 ```csharp
 class Assume
@@ -165,6 +174,7 @@ class Assume
 }
 ```
 
+
 ### Empty
 
 Assumes that the specified enumerable object is empty:
@@ -181,6 +191,7 @@ collection.Assume().Empty();
 collection.Assume().Empty("Collection should be empty");
 ```
 
+
 ### Equal
 
 Assumes that two objects are equal:
@@ -196,9 +207,10 @@ objectA.Assume().Equal(objectB);
 objectA.Assume().Equal(objectB, "objectA should be equal than objectB");
 ```
 
+
 ### False
 
-Assume that the specified condition is false:
+Assumes that the specified condition is false:
 
 ```csharp
 Assume.False(condition);
@@ -215,6 +227,7 @@ var str = "something";
 str.Assume()
    .False(x => string.IsNullOrEmpty(x), "str should not be null or empty");
 ```
+
 
 ### NotEmpty
 
@@ -234,6 +247,7 @@ collection.Assume().NotEmpty();
 collection.Assume().NotEmpty("Collection should not be empty");
 ```
 
+
 ### NotEqual
 
 Assumes that two objects are not equal:
@@ -248,6 +262,7 @@ objectA.AssumeNotEqual(objectB, "objectA should not be equal than objectB");
 objectA.Assume().NotEqual(objectB);
 objectA.Assume().NotEqual(objectB, "objectA should not be equal than objectB");
 ```
+
 
 ### NotNull
 
@@ -267,6 +282,7 @@ obj.Assume().NotNull();
 obj.Assume().NotNull("obj should not be null");
 ```
 
+
 ### Null
 
 Assumes that the specified object is null:
@@ -285,6 +301,7 @@ obj.Assume().Null();
 obj.Assume().Null("obj should be null");
 ```
 
+
 ### Reject
 
 Rejects the current assumption:
@@ -296,6 +313,7 @@ Assume.Reject(message);
 var obj1 = CouldBeNull() ?? Assume.Reject<string>();
 var obj2 = CouldBeNull() ?? Assume.Reject<string>(message);
 ```
+
 
 ### That
 
@@ -311,6 +329,7 @@ str.AssumeThat(x => !string.IsNullOrEmpty(x), "str should not be null or empty")
 str.Assume()
    .That(x => !string.IsNullOrEmpty(x), "str should not be null or empty");
 ```
+
 
 ### True
 
@@ -334,9 +353,10 @@ str.Assume()
 
 ## Examples
 
+
 ### Windows only
 
-With dotnet core, your tests could be runned in any platform. Maybe your test is only ready for Windows platforms. You can use `Assume` to skip this test when the current execution platform is not the expected one:
+With .NET Core, your tests could be run on any platform. Maybe your test is only ready for Windows. You can use `Assume` to skip this test when the current execution platform is not the expected one:
 
 ```csharp
 [Fact]
@@ -358,11 +378,13 @@ private static bool IsWindows()
 }
 ```
 
-You can see full impementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/Demos/OSDemoTests.cs).
+
+You can see the full implementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/Demos/OSDemoTests.cs).
+
 
 ### Bug fixing
 
-You can use `Assume` to skip tests that depends on a bug be fixed:
+You can use `Assume` to skip tests that depend on a bug being fixed:
 
 ```csharp
 [Fact]
@@ -389,9 +411,10 @@ public void AssumeBugsAreFixed()
 }
 ```
 
+
 ### Context value
 
-In this utopian test case we can find an artifact we want to test called `Target`. This artifact has two methods: `CanExecute` and `Execute`. In our imaginary system, when you are going to use `Target` you will call `CanExecute` always before. And if the return value is `true` then you will call `Execute`:
+In this example, we have an artifact we want to test called `Target`. This artifact has two methods: `CanExecute` and `Execute`. In our imaginary system, when you use `Target`, you always call `CanExecute` first. If the return value is `true`, then you call `Execute`:
 
 ```csharp
 interface IContext
@@ -430,9 +453,10 @@ class Target
 }
 ```
 
-Going deep in to the code you can determine when the `state` stored in the context is `Active`,  `CanExecute` method will return `false`, and `true` otherwise. So you can test the `Execute` method excluding the case when `state` is `Active`, but it wont provide information about what really happens with this particular case.
 
-For this case you may want to explicitly notify other developers about this special behavior. To achieve this you can use `Assume` to skip the test when `state` is `Active`:
+Looking deeper into the code, you can determine that when the `state` stored in the context is `Active`, the `CanExecute` method will return `false`, and `true` otherwise. So you can test the `Execute` method excluding the case when `state` is `Active`, but it won't provide information about what really happens in this particular case.
+
+For this case, you may want to explicitly notify other developers about this special behavior. To achieve this, you can use `Assume` to skip the test when `state` is `Active`:
 
 ```csharp
 [Theory]
@@ -454,11 +478,13 @@ public void Target_Execute(States initialState)
 }
 ```
 
-You can see full impementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/Demos/ContextDemoTests.cs).
+
+You can see the full implementation of this example [here](https://github.com/fernandoescolar/Xunit.Assume/blob/master/tests/Xunit.Assume.Tests/Demos/ContextDemoTests.cs).
+
 
 ### Any other scenario
 
-To reject an assumption in any other scenario you can use the `Reject` method:
+To reject an assumption in any other scenario, you can use the `Reject` method:
 
 ```csharp
 [Fact]
@@ -471,5 +497,6 @@ public void AssumeBugsAreFixed()
 ```
 
 ## License
+
 
 The source code is licensed under the [MIT](LICENSE) license.
